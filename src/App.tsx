@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Button from './components/Button/Button';
+import { Box } from '@chakra-ui/react';
 
-function App() {
+
+const Home = lazy(() => import('./views/Home'));
+const About = lazy(() => import('./views/About'));
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Box p={5}>
+        <nav>
+          <Button as={Link} to="/" label="Home" mr={3} />
+          <Button as={Link} label='About' to="/about" />
+        </nav>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </Suspense>
+      </Box>
+    </Router>
   );
-}
+};
 
 export default App;
